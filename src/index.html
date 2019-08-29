@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webpack</title>
+
+    <!--进入打包文件只能进入根路径下的文件才会有效果，
+    webpack-dev-server 帮我们打包生成的bundle.js文件，并没有存放到实际的物理磁盘上，
+    而是直接托管到电脑的内存中，所以我们在项目根目录中根本找不到这个打包好的bundle.js文件-->
+    <!--<script src="./dist/bundle.js"></script>-->
+    <script src="/bundle.js"></script>
+</head>
+
+<body>
+
+    <div>webpack</div>
+</body>
+</html>
