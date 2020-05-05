@@ -1,38 +1,64 @@
 const path = require('path');
-const CopyrightWebpackPlugin = require('./plugins/copyright-webpack-plugin');
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const Happypack = require('happypack');
+// 模块 happypack 可以实现多线程打包
 module.exports = {
   mode: 'development',
-  entry: {
-    main: './index.js'
-  },
+  entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
   },
-  resolveLoader: { // loader的地址，先去node_modules内去找
-    modules: ['node_modules', './loader']
+  devServer:{
+    port: 3000,
+    contentBase: 'dist',
+    open: true
   },
-  module: {
-    rules: [{
-      test: /\.js$/,
-      use: [ // loader 是自后往前执行的
-        {
-          loader: 'replace.loader',
-        },
-        {
-          loader: 'replace.loaderAsync',
-          options: {
-            name: 'keba'
-          }
+  module:{
+    // noParse: 'jquery', // 不去解析jquery中的依赖库  优化点
+    rules: [
+      {
+        test: /.\js$/,
+        exclude: /node_modules/, // 排除某个文件  优化点
+        include: path.resolve('src'), // 包含某个文件
+        use: 'Happypack/loader?id=js'
+        // use:[{
+        //   loader: 'babel-loader',
+        //   options:{
+        //     presets:[
+        //       '@babel/preset-env',
+        //       '@babel/preset-react'
+        //     ]
+        //   }
+        // }]
+      },
+      {
+        test: /\.css$/,
+        use:['style-loader','css-loader']
+      }
+    ]
+  },
+  plugins:[
+    new Happypack({
+      id: 'js',
+      use:[{
+        loader: 'babel-loader',
+        options:{
+          presets:[
+            '@babel/preset-env',
+            '@babel/preset-react'
+          ]
         }
-      ]
-    }]
-  },
-  plugins: [
-    new CopyrightWebpackPlugin({
-      name:'开课吧'
+      }]
+    }),
+    // 先去查找打包的 react ，没有的话再对其进行打包，减少打包体积
+    // new webpack.DllPlugin({
+    //   manifest: path.resolve(__dirname, "dist", 'manifest.json')
+    // }),
+    new webpack.IgnorePlugin(/\.\/locale/,/moment/), // 忽略一些文件，引入moment包时，打包去掉该语言文件包，减少体积
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
     })
   ]
 }
-

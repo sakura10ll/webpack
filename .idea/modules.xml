@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/webpackConfig.iml" filepath="$PROJECT_DIR$/.idea/webpackConfig.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/webpack.iml" filepath="$PROJECT_DIR$/.idea/webpack.iml" />
+>>>>>>> 558018c19a46fc0dc435bdc0923520b37511d452
     </modules>
   </component>
 </project>

@@ -1,4 +1,5 @@
-// 若不设置 webpack.config.js 文件，运行webpack命令，默认打包src下的index.js（只能识别index）文件，并生成打包后的文件main.js
+// 若不设置 webpack.config.js 文件，运行webpack命令，默认打包index.js（只能识别index）文件，并生成打包后的文件main.js
+
 const path = require("path"); // 引入path模块，node.js中提供用于处理文件路径和目录路径的实用工具
 
 // console.info(__dirname);  打印 F:\新建文件夹\webpackConfig
@@ -39,11 +40,12 @@ module.exports = {
       new OptimizeCss()
     ]
   },
-  mode: 'production',  // 模式  默认两种 production，development
+  mode: 'development',  // 模式  默认两种 production，development
   entry: path.join(__dirname, "./src/index.js"), // webpack的入口文件，需要webpack打包哪个文件，指定文件路径
   output: {  // 输出文件的相关配置
     path: path.join(__dirname, "./dist"), // 输出到指定目录下,必须是绝对路径
-    filename: "bundle.[hash:8].js"  // 输出文件名  设置哈希戳，并设只有8位
+    filename: "bundle.[hash:8].js",  // 输出文件名  设置哈希戳，并设只有8位
+    publicPath: "http://www..."   // 公共路径，所有输出都会加入该路径
   },
   // 开发服务器的配置
   devServer: {   // 配置dev-server 命令参数的第二种方式
@@ -74,15 +76,72 @@ module.exports = {
 
     // 将css抽离成一个css文件
     new MiniCssExtractPlugin({
-      filename: 'main.css'
+      filename: 'css/main.css'
+    }),
+
+    // 将jquery提供成 $,在每个模块中都注入
+    new webpack.ProvidePlugin({
+      $: 'jquery'
     })
   ],
+  // 排除第三方模块的打包
+  externals: {
+
+  },
   // 模块
   module: {  // 这个节点,用于配置所有第三方模块加载器
-    rules: [ // 数组 所有第三方模块的匹配规则  loader调用总是从右到左调用
+    rules: [ // 数组 所有第三方模块的匹配规则  loader调用总是从右到左调用,从下到上
       // css-loader解析 @import 这种语法   style-loader 是把css插入到head的标签中
       // loader 的用法，一个的话用字符串，多个的话用数组，也可用对象
+      // loader  pre 前面执行  normal 普通loader  内联loader  post 后置
       // { test: /\.css$/, use: ['style-loader','css-loader'] }, // 配置处理 .css 文件的第三方loader规则
+      // {  // 代码校验
+      //   test: /\.js$/,
+      //   use: {
+      //     loader: 'eslint-loader',
+      //     options: {
+      //       enforce: 'pre'  // 在所有loader之前用 port（之后） 
+      //     }
+      //   }
+      // },
+      {
+        test: require.resolve('jquery'),  // 暴露在window上
+        use: 'expose-loader?$'
+      },
+      {
+        test: /\.html$/,
+        use: 'html-withimg-loader'
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        // 做一个限制 当我们的图片 小于 多少k 时， 用base64俩转化
+        // 否则用file-loader 产生真是的图片
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 200*1024,
+            outputPath: '/img/',
+            publicPath: '单独给图片加公共路径'
+          }
+        }
+      },
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {  // 用babel-loader 需要把es6 转化为 es5
+              presets: [
+                '@babel/preset-env'
+              ],
+              plugins: [
+                '@babel/plugin-proposal-class-properties',
+                // '@babel/plugin-transform-runtime'
+              ]
+            }
+          }
+        ]
+      },
       {
         // 可以处理less文件
         test: /\.css$/,

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="ProjectTasksOptions" suppressed-tasks="Babel" />
+=======
+  <component name="ProjectTasksOptions" suppressed-tasks="Less" />
+>>>>>>> 558018c19a46fc0dc435bdc0923520b37511d452
 </project>
