@@ -34,7 +34,31 @@
 // xhr.send();
 
 
-import React from 'react';
-import { render } from 'react-dom';
+// import React from 'react';
+// import { render } from 'react-dom';
 
-render(<h1>jsx</h1>, window.root);
+// render(<h1>jsx</h1>, window.root);
+
+// import './a';
+// import './b';
+
+// console.log('index.js')
+
+
+// let button = document.createElement('button');
+// button.innerHTML = 'hello';
+// // react(vue) 懒加载
+// button.addEventListener('click', function(){
+//   // jsonp 实现动态加载文件
+//   import('./source.js').then(data=>{
+//     console.log(data.default);
+//   })
+// })
+// document.body.appendChild(button);
+
+
+import str from './source';
+console.log(str);
+if(module.hot){
+  module.hot.accept('./source')
+}

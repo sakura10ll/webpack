@@ -1,0 +1,11 @@
+webpack中自带的优化:
+  1. import 在生产环境下， 会自动去掉没用的代码
+      tree-shaking 把没用的代码自动删除掉。（仅限import 引入）
+      用require引入不会。
+  2. scope hosting  作用域提升。  在webpack中自动省略可以简化代码
+
+
+webpack 本质上是一种事件流的机制，他的工作流程就是将各个插件串联起来，而实现这一切的核心就是Tapable，Tapable 有点
+类似于nodejs的events库，核心原理也是依赖于发布订阅模式。
+tapable 库中有三种注册方式  tab 同步注册  tabAsync（cb）  tabPromise（注册时promise）
+ 回调对应注册  call  callAsync  promise
