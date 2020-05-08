@@ -1,98 +1,94 @@
-/*
- * @Title: BONC - React
- * @Descripttion: 
- * @Company: 北京东方国信科技股份有限公司
- * @Author: renlulu
- * @Date: 2020-05-06 11:16:41
- */
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
-const Happypack = require('happypack');
-// 模块 happypack 可以实现多线程打包
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+class P{
+  apply(compiler){
+    console.log('start');
+    compiler.hooks.emit.tap('emit', function(){
+      console.log('emit');
+    })
+  }
+}
+class P1{
+  apply(compiler){
+    console.log('start');
+    compiler.hooks.afterPlugins.tap('afterPlugins', function(){
+      console.log('afterPlugins');
+    })
+  }
+}
+
 module.exports = {
   mode: 'development',
-  optimization: {
-    splitChunks: { // 分割代码块
-      cacheGroups: { // 缓存组
-        common: {
-          chunks: 'initial',
-          minSize: 0,  // 大小
-          minChunks: 2, // 引用几次
-        },
-        vendor:{
-          priority: 1, // 权重，先去抽离npm包
-          test: /node_modules/,
-          minSize: 0,  // 大小
-          minChunks: 2, // 引用几次
-        }
-      }
-    }
-  },
-  // entry: './src/index.js',
-  entry:{
-    index: './src/index.js',
-    other: './src/other.js'
-  },
+  entry: './src/index.js',
   output: {
-    filename: '[name].js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
-  devServer:{
-    hot: true, // 开启热更新
-    port: 3000,
-    contentBase: 'dist',
-    open: true
+  devtool: "source-map",
+  resolveLoader:{
+    // 配置 loader 文件查找路径，先去node_modules去查找，若找不到去loader文件夹下去查找
+    modules: ["node_modules", path.resolve(__dirname, 'loader')],
+    // 配置loader别名
+    // alias:{
+    //   loader1: path.resolve(__dirname, 'loader', 'style-loader')
+    // }
   },
+  watch: true,
   module:{
-    // noParse: 'jquery', // 不去解析jquery中的依赖库  优化点
     rules: [
       {
-        test: /.\js$/,
-        exclude: /node_modules/, // 排除某个文件  优化点
-        include: path.resolve('src'), // 包含某个文件
-        // use: 'Happypack/loader?id=js'
-        use:[{
-          loader: 'babel-loader',
-          options:{
-            presets:[
-              '@babel/preset-env',
-              '@babel/preset-react'
-            ],
-            plugins: [
-              '@babel/plugin-syntax-dynamic-import'  // 动态导入包
-            ]
+        test: /\.jpg$/,
+        // 目的就是根据图片生成一个md5戳， 发射到dist目录下，file-loader还会返回当前的图片路径
+        // use:'file-loader'
+        // url-loader  1. file-loader 会处理路径
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 20 * 1024
           }
-        }]
+        },
+
       },
       {
-        test: /\.css$/,
-        use:['style-loader','css-loader']
+        test:/\.js$/,
+        use: {
+          loader: 'banner-loader',  // 为所有的js加统一的注释
+          options: {
+            text: 'testBanner',
+            filename: path.resolve(__dirname, 'banner.js')
+          }
+        }
       }
+      // {
+      //   test:/\.js$/,
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       presets: [
+      //         '@babel/preset-env'
+      //       ]
+      //     }
+      //   }
+      // }
     ]
+    // loader分类 pre 在前面的  post 在后面   normal  用 enforce 参数配置
+    // loader 的顺序 pre --> nomal --> inline --> post
+    // rules:[ // loader 的顺序问题 从右到左， 从上到下
+    //   {
+    //     test: /\.less$/,
+    //     use:[
+    //       'loader1',
+    //       path.resolve(__dirname, 'loader', 'less-loader'),
+    //     ]
+    //   }
+    // ]
   },
-  plugins:[
-    // new Happypack({
-    //   id: 'js',
-    //   use:[{
-    //     loader: 'babel-loader',
-    //     options:{
-    //       presets:[
-    //         '@babel/preset-env',
-    //         '@babel/preset-react'
-    //       ]
-    //     }
-    //   }]
-    // }),
-    // 先去查找打包的 react ，没有的话再对其进行打包，减少打包体积
-    // new webpack.DllPlugin({
-    //   manifest: path.resolve(__dirname, "dist", 'manifest.json')
-    // }),
-    new webpack.IgnorePlugin(/\.\/locale/,/moment/), // 忽略一些文件，引入moment包时，打包去掉该语言文件包，减少体积
-    new HtmlWebpackPlugin({
-      template: './src/index.html'
-    }),
-    new webpack.NamedModulesPlugin(), // 打印更新的模块路径
-    new webpack.HotModuleReplacementPlugin()  // 热更新插件
-  ]
+  // plugins: [
+  //   new P(),
+  //   new P1()
+  // ]
+
 }

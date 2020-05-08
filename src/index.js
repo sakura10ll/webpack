@@ -1,64 +1,29 @@
-// import $ from "jquery";
 
-// import './css/index.css';
-// // webpack 默认只能打包处理js类型的文件，无法处理其他非 js 类型的文件；
-// // 如果要处理非 js 类型的文件，我们需要手动安装一些合适的第三方 loader 加载器
-// // 若需要打包处理 css 文件，需要安装 style-loader css-loader
-// // 在webpack.config.js 配置文件中新增一个 module 配置节点
-// import a from './a';
-// console.log(a)
-// // $(function () {
-// //     $("div").css("backgroundColor",'#bbb')
-// // });
-// const f = () =>{
-//   console.log('es6')
-// }
-// f();
-// console.log('home');
+// require('./less/index.less');
 
-// class Log{
+// console.log(str);
+
+
+// -! 不会让文件  再去通过 pre + normal loader 来处理
+// ! 没有normal
+// !! 什么都不要
+// let str = require('!!inline-loader!./a.js');
+
+// loader 默认是由两部分组成 pitchloader（有返回值和无返回值的情况）  normalloader
+
+// class P {
 //   constructor(){
-//     console.log('出错了');
+//     this.name = 'test';
+//   }
+//   getName(){
+//     return this.name;
 //   }
 // }
-// let log = new Log();
 
-// let xhr = new XMLHttpRequest();
+// const pTest = new P();
+// console.log(pTest);
 
-// xhr.open('GET', '/api/user', true);
-
-// xhr.onload = function(){
-//   console.log(xhr.response());
-// }
-
-// xhr.send();
-
-
-// import React from 'react';
-// import { render } from 'react-dom';
-
-// render(<h1>jsx</h1>, window.root);
-
-// import './a';
-// import './b';
-
-// console.log('index.js')
-
-
-// let button = document.createElement('button');
-// button.innerHTML = 'hello';
-// // react(vue) 懒加载
-// button.addEventListener('click', function(){
-//   // jsonp 实现动态加载文件
-//   import('./source.js').then(data=>{
-//     console.log(data.default);
-//   })
-// })
-// document.body.appendChild(button);
-
-
-import str from './source';
-console.log(str);
-if(module.hot){
-  module.hot.accept('./source')
-}
+import p from '../assets/flow.jpg';
+let img = new Image();
+img.src = p;
+document.body.appendChild(img);

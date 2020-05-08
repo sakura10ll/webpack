@@ -7,5 +7,25 @@ webpack中自带的优化:
 
 webpack 本质上是一种事件流的机制，他的工作流程就是将各个插件串联起来，而实现这一切的核心就是Tapable，Tapable 有点
 类似于nodejs的events库，核心原理也是依赖于发布订阅模式。
-tapable 库中有三种注册方式  tab 同步注册  tabAsync（cb）  tabPromise（注册时promise）
- 回调对应注册  call  callAsync  promise
+tapable 库中有三种注册方式  tab 同步注册  tabAsync（cb 有个回调函数参数）  tabPromise（注册时promise）
+  回调对应注册  call（同步）  callAsync（异步）  promise（异步）
+  syncHook 是同步的
+  syncBailHook return 返回的不是undefined就会停止
+  SyncWaterfallHook 监听函数的返回值会传给下一个监听函数
+  SyncLoopHook 当监听函数触发时，如果该监听函数返回true就一直执行该函数，若返回undefined则继续向下执行
+
+
+  异步的钩子分为两种 串行 和 并行（等待所有并发的异步函数执行后执行回调函数）
+
+  异步并行 ： AsyncParallelHook  不关心监听函数的返回值
+            AsyncParallelBailHook  只要监听的函数返回不为null，就会忽略后面监听函数的执行。直接跳跃到callAsync等触发函数绑定的回调函数，然后执行这个被绑定的回调函数。（使用原理与 syncBailHook 类似）
+  异步串行 ： AsyncSeriesHook
+            AsyncSeriesWaterfallHook  监听函数的回调函数的第二个参数可以作为下一个监听函数的参数
+
+
+
+babel 提供相关的AST操作的模块来编译我们的代码：
+    @babel/parser 通过该模块来解析我们的代码生成AST抽象语法树
+    @babel/traverse 通过该模块对AST节点进行递归遍历
+    @babel/types 通过该模块对具体的AST节点进行增、删、改、查
+    @babel/generator 通过该模块可以将修改后的AST生成新的代码(es5 代码)

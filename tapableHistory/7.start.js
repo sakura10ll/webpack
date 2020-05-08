@@ -1,24 +1,28 @@
-const { AsyncSeriesWaterfallHook } = require('tapable'); // 异步串行
+const { AsyncSeriesHook } = require('tapable'); // 异步串行
 class Lesson{
   constructor(){
     this.index = 0;
     this.hooks = {
-      arch: new AsyncSeriesWaterfallHook(['name']),
+      arch: new AsyncSeriesHook(['name']),
     }
   }
 
   tap(){ // 注册监听函数
     this.hooks.arch.tapAsync('node', (name,cb)=>{
-      setTimeout(()=>{
-        console.log('node', name);
-        cb(null, 'result');  // 向下一个传参，若error直接跳过去下一个
-      },1000)
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          console.log('node', name);
+          resolve();
+        },1000)
+      })
     })
     this.hooks.arch.tapAsync('react', function(name,cb){
-      setTimeout(()=>{
-        console.log('react', name);
-        cb(null);
-      },1000)
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          console.log('react', name);
+          resolve();
+        },1000)
+      })
     })
   }
   start(){

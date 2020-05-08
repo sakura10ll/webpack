@@ -1,1 +1,2 @@
-console.log('b.......');
+
+let b = require('./base/b.js');
