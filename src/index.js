@@ -23,7 +23,8 @@
 // const pTest = new P();
 // console.log(pTest);
 
-import p from '../assets/flow.jpg';
-let img = new Image();
-img.src = p;
-document.body.appendChild(img);
+// import p from '../assets/flow.jpg';
+// let img = new Image();
+// img.src = p;
+// document.body.appendChild(img);
+import './index.less';
