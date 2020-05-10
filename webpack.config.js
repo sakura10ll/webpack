@@ -2,7 +2,12 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const DonePlugin = require('./plugins/DonePlugin.js');
+const AsyncPlugin = require('./plugins/AsyncPlugin.js');
+const FileListPlugin = require('./plugins/FileListPlugin.js');
+const MiniCssExtractPlugin= require('mini-css-extract-plugin');
+// const InlineSourcePlugin = require('./plugins/InlineSourcePlugin.js');
+const UploadPlugin = require('./plugins/UploadPlugin.js');
 class P{
   apply(compiler){
     console.log('start');
@@ -27,7 +32,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
-  devtool: "source-map",
+  // devtool: "source-map",
   resolveLoader:{
     // 配置 loader 文件查找路径，先去node_modules去查找，若找不到去loader文件夹下去查找
     modules: ["node_modules", path.resolve(__dirname, 'loader')],
@@ -36,7 +41,7 @@ module.exports = {
     //   loader1: path.resolve(__dirname, 'loader', 'style-loader')
     // }
   },
-  watch: true,
+  // watch: true,
   module:{
     rules: [
       {
@@ -44,7 +49,7 @@ module.exports = {
         use:['style-loader', 'css-loader', 'less-loader']
       },
       {
-        test: /\.jpg$/,
+        test: /\.(jpg|png)$/,
         // 目的就是根据图片生成一个md5戳， 发射到dist目录下，file-loader还会返回当前的图片路径
         // use:'file-loader'
         // url-loader  1. file-loader 会处理路径
@@ -65,7 +70,12 @@ module.exports = {
             filename: path.resolve(__dirname, 'banner.js')
           }
         }
+      },
+      {
+        test:/\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       }
+
       // {
       //   test:/\.js$/,
       //   use: {
@@ -90,9 +100,29 @@ module.exports = {
     //   }
     // ]
   },
-  // plugins: [
-  //   new P(),
-  //   new P1()
-  // ]
+  plugins: [
+    // new P(),
+    // new P1()
+    new MiniCssExtractPlugin({
+      filename: 'main.css'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    }),
+    new FileListPlugin({
+      filename: 'list.md'
+    }),
+    // new InlineSourcePlugin({
+    //   match:/\.(js|css)/
+    // })
+    new UploadPlugin({
+      bucket: '',  // 存储空间名
+      domain: '',  // 域名
+      accessKey: '',  // 
+      secretKey: ''  // 密钥
+    })
+    // new DonePlugin(),
+    // new AsyncPlugin()
+  ]
 
 }

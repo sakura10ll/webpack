@@ -27,4 +27,5 @@
 // let img = new Image();
 // img.src = p;
 // document.body.appendChild(img);
-import './index.less';
+// import './index.less';
+import './css/index.css';
