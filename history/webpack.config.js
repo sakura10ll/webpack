@@ -1,5 +1,4 @@
-// 若不设置 webpack.config.js 文件，运行webpack命令，默认打包index.js（只能识别index）文件，并生成打包后的文件main.js
-
+// 若不设置 webpack.config.js 文件，运行webpack命令，默认打包src下的index.js（只能识别index）文件，并生成打包后的文件main.js
 const path = require("path"); // 引入path模块，node.js中提供用于处理文件路径和目录路径的实用工具
 
 // console.info(__dirname);  打印 F:\新建文件夹\webpackConfig
