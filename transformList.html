@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{ margin: 0; padding: 0;}
+    ul {list-style: none;}
+    .list{
+      width: 250px;
+    }
+    .list li{ height: 97px; border-bottom: 1px dotted #666; overflow: hidden;}
+    .list li:last-child{border-bottom: 0;}
+    .imgDiv{ width: 112px; height: 77px; float: left; margin: 10px 9px 0 5px; position: relative;}
+    .box{
+      border: 1px solid black;
+      width: 92px;
+      height: 57px;
+      left: 9px;
+      top: 9px;
+      position: absolute;
+      transform: translate(0, -100px) rotate(-90deg);
+      transition: 3s;
+      transform-origin: 0,0;
+    }
+    .text{
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      bottom: 30px;
+      transform: translate(0,100px);
+      transition: 3s;
+    }
+    .img{ width: 112px; height: 100%; background-color: red; }
+    .imgDiv:hover .box{
+      transform: translate(0,0) rotate(0);
+    }
+    .imgDiv:hover .text{
+      transform: translate(0,0);
+    }
+    .textDiv{ float: left; width: 114px; font-size: 12px; height: 21px; line-height: 21;}
+  </style>
+</head>
+<body>
+  <ul class="list">
+    <li>
+      <div class="imgDiv">
+        <div class="img"></div>
+        <div class="box"></div>
+        <div class="text">aaaaaaaaa</div>
+      </div>
+      <div class="textDiv">
+        <p>bbbbbbbbbbbbb</p>
+      </div>
+    </li>
+    <li>
+      <div class="imgDiv">
+        <div class="img"></div>
+        <div class="box"></div>
+        <div class="text">aaaaaaaaa</div>
+      </div>
+      <div class="textDiv">
+        <p>bbbbbbbbbbbbb</p>
+      </div>
+    </li>
+    <li>
+      <div class="imgDiv">
+        <div class="img"></div>
+        <div class="box"></div>
+        <div class="text">aaaaaaaaa</div>
+      </div>
+      <div class="textDiv">
+        <p>bbbbbbbbbbbbb</p>
+      </div>
+    </li>
+    <li>
+      <div class="imgDiv">
+        <div class="img"></div>
+        <div class="box"></div>
+        <div class="text">aaaaaaaaa</div>
+      </div>
+      <div class="textDiv">
+        <p>bbbbbbbbbbbbb</p>
+      </div>
+    </li>
+  </ul>
+</body>
+</html>

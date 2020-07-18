@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .container{
+      margin: 0 auto;
+      width: 800px;
+    }
+    .imgBox{
+      margin-bottom: 20px;
+      height: 160px;
+      width: 100%;
+      background: #888;
+    }
+    .imgBox img{
+      display: none;
+      width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- <div class="imgBox">
+      <img src="" alt="" data-img="http://www.zhufengpeixun.cn/main/img/banner10.png"/>
+    </div> -->
+  </div>
+  <!--单个图片懒加载 <div class="imgBox">
+    <img src="" alt="" data-img="http://www.zhufengpeixun.cn/main/img/banner10.png"/>
+  </div> -->
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="./delayImg.js"></script>
+</body>
+</html>
